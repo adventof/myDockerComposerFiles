@@ -11,9 +11,6 @@ services:
       - TZ=Europe/London
       - URL=teichwirtschaftgreim.de
       - VALIDATION=http
-      - DNSPLUGIN=cloudflare #optional
-      - PROPAGATION= #optional
-      - DUCKDNSTOKEN= #optional
       - EMAIL=webadmin-drupal@teichwirtschaftgreim.de
       - ONLY_SUBDOMAINS=false #optional
     networks:
