@@ -1,4 +1,30 @@
-version: ‘3’
+version: "2.1"
+services:
+  letsencrypt_0:
+    image: linuxserver/letsencrypt
+    container_name: letsencrypt_0
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=33
+      - PGID=33
+      - TZ=Europe/London
+      - URL=teichwirtschaftgreim.de
+      - VALIDATION=http
+      - DNSPLUGIN=cloudflare #optional
+      - PROPAGATION= #optional
+      - DUCKDNSTOKEN= #optional
+      - EMAIL=webadmin-drupal@teichwirtschaftgreim.de
+      - ONLY_SUBDOMAINS=false #optional
+    networks:
+      - lsio
+    volumes:
+      - /dockerdata/letsencrypt/instance_0:/config
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+
 networks:
-  my-network:
+  lsio:
     driver: bridge
