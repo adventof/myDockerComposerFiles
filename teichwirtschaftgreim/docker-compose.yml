@@ -6,19 +6,16 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=33
+      - PGID=33
       - TZ=Europe/London
       - URL=teichwirtschaftgreim.de
-      - SUBDOMAINS=www,
       - VALIDATION=http
       - DNSPLUGIN=cloudflare #optional
       - PROPAGATION= #optional
       - DUCKDNSTOKEN= #optional
       - EMAIL=webadmin-drupal@teichwirtschaftgreim.de
       - ONLY_SUBDOMAINS=false #optional
-      - EXTRA_DOMAINS= #optional
-      - STAGING=false #optional
     networks:
       - lsio
     volumes:
