@@ -41,7 +41,7 @@ services:
     networks:
       - lsio
     environment:
-      - MYSQL_ROOT_PASSWORD=aya8ec9Dh5euCiseau1dfh0oh
+      - MYSQL_ROOT_PASSWORD=XYZ
     restart: unless-stopped
     
   drupal_0:
