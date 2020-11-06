@@ -1,6 +1,4 @@
-create Drupal Instance
-
-
+# Installation
 # Drupal Instance
 docker run --rm drupal tar -cC /var/www/html/sites . | tar -xC /dockerdata/drupal/instance_0/sites
 
@@ -8,7 +6,139 @@ docker run --rm drupal tar -cC /var/www/html/sites . | tar -xC /dockerdata/drupa
 # Testdrupal Instance
 docker run --rm drupal tar -cC /var/www/html/sites . | tar -xC /dockerdata/drupal/instance_1/sites
 
+
+# install host addons / Libraries
+docker cp php.ini drupal_0:/usr/local/etc/php/php.ini
+cp php.ini-production to php.ini 
+
+# edit trusted_host_patterns
+/dockerdata/drupal/instance_0/sites/default/settings.php
+$settings['trusted_host_patterns'] = [
+    '^XYZ\.de$',
+    '^drupal\.XYZ\.de$',
+];
+/dockerdata/drupal/instance_1/sites/default/settings.php
+$settings['trusted_host_patterns'] = [
+    '^drupal\-test\.XYZ\.de$',
+];
+
+# Konfiguration
+
+# Kommentare entfernen
+Startseite  Verwaltung  Struktur  Inhaltstypen  Artikel Felder verwalten
+ -> Kommentare löschen
+
+# Farbe der Website
 Design:
-Bartik 9.0.7 (Standard-Theme) - 
+Bartik 9.0.7 (Standard-Theme)
+Startseite  Verwaltung  Design  Design-Einstellungen
+Kopfzeilenhintergrund oben  #0f5826
+Kopfzeilenhintergrund unten #459736
+
+# Slogan der Website
+Startseite  Verwaltung  Konfiguration  System Grundeinstellungen der Website 
+Slogan: Frischen Fisch auf jeden Tisch
+
+# nur Admin kan neue nutzer registrieren
+Startseite  Verwaltung  Konfiguration  Benutzer Kontoeinstellungen
+Wer kann Konten registrieren? -> Nur Administratoren
+
+# Suchfeld deaktivieren
+Startseite  Verwaltung  Struktur Blocklayout
+Suche entfernen
+Werkzeuge nach oben verschieben
+
+# Addins aktivieren
+Startseite  Verwaltung -> Module
+Update Manager
+
+# install drupal Addins
+https://www.drupal.org/project/geofield
+https://ftp.drupal.org/files/projects/geofield-8.x-1.16.tar.gz
+https://www.drupal.org/project/leaflet
+https://ftp.drupal.org/files/projects/leaflet-2.1.3.tar.gz
+https://www.drupal.org/project/matomo
+https://ftp.drupal.org/files/projects/matomo-8.x-1.11.tar.gz
+https://www.drupal.org/project/geophp
+https://ftp.drupal.org/files/projects/geophp-8.x-1.0.tar.gz
+https://www.drupal.org/project/ctools
+https://ftp.drupal.org/files/projects/ctools-8.x-3.4.tar.gz
+https://www.drupal.org/project/eu_cookie_compliance
+https://ftp.drupal.org/files/projects/eu_cookie_compliance-8.x-1.13.tar.gz
+
+# Addins aktivieren
+Chaos Tools
+Geofield
+Leaflet
+Leaflet Views
+Migrate Drupal UI
+geoPHP
+Matomo Analytics
+
+# leaflet Karte einbinden
+Startseite  Verwaltung  Struktur Inhaltstypen
+  neuen Inhaltstyp hinzufügen
+  Name: karte
+  speichern
+  neues Feld für den Inhaltstyp 'karte' hinzufügen
+  Feld hinzufügen: 'Geofield' mit Beschriftung: 'Karte'
+  weiter und Koordinaten eingeben
+    Längengrad, Latitude: '14.3250141'
+    Breitengrad, Longitude: '51.3069664'
+  zu Inhaltstypen zurückgehen
+  --> !Formularanzeige verwalten!
+  bei 'Karte' 'Längen/Breitengrad' auf 'Leaflet (Map)' ändern und Ändern
+    Koordinaten von oben eingeben
+    Zoom: 13
+    deaktivieren von 'Automatically locate user current position'
+    deaktivieren von 'Show geofield input element'
+    deaktivieren aller haken beim 'LEAFLET PM SETTINGS Toolbar position.'
+    aktivieren von 'Enable Map Reset Control'
+  --> !Anzeige verwalten!
+  bei 'karte' 'Länge/Breite' auf 'Leaflet' ändern und Konfigurieren
+    Beschriftung: Inline
+    RESET MAP CONTROL Enable Map Reset Control
+    Zoom 13
+    Popup Information: 
+
+# matomo Anbindung aktivieren
+Startseite  Verwaltung  Konfiguration  System Matomo Analytics
+  Matomo site ID:
+    1 (für Produktionsystem)
+    2 (für Testsystem)
+  HTTP URL: matomo_0/
+  Matomo HTTPS URL: https://matomo.XYZ.de/
+ 
+# Cookie Richtlinie konfigurieren
+
+Startseite  Verwaltung  Konfiguration  System  EU Cookie Compliance Einstellungen
+Text: COOKIE INFORMATIONS-BANNER
+Unsere Website verwendet Cookies. Das sind kleine Textdateien, die Ihr Webbrowser auf Ihrem Endgerät speichert. Cookies helfen uns dabei, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen.
+
+DATENSCHUTZRICHTLINIE
+Datenschutzrichtlinien-Link
+https://XYZ.de/datenschutzerklarrung
+deaktivieren von 'Link zur Datenschutzrichtlinie in einem neuen Fenster öffnen.'
+ 
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
 
 
