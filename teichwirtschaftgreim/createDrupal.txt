@@ -8,4 +8,7 @@ docker run --rm drupal tar -cC /var/www/html/sites . | tar -xC /dockerdata/drupa
 # Testdrupal Instance
 docker run --rm drupal tar -cC /var/www/html/sites . | tar -xC /dockerdata/drupal/instance_1/sites
 
+Design:
+Bartik 9.0.7 (Standard-Theme) - 
+
 
