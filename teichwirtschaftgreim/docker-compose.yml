@@ -13,7 +13,7 @@ services:
       - VALIDATION=http
       - EMAIL=webadmin-drupal@teichwirtschaftgreim.de
       - ONLY_SUBDOMAINS=false #optional
-      - SUBDOMAINS=nextcloud,phpmyadmin,www,portainer,matomo,drupal
+      - SUBDOMAINS=drupal-test,nextcloud,phpmyadmin,www,portainer,matomo,drupal
     networks:
       - lsio
     volumes:
