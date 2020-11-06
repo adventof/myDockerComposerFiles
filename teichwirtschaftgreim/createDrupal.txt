@@ -1,0 +1,11 @@
+create Drupal Instance
+
+
+# Drupal Instance
+docker run --rm drupal tar -cC /var/www/html/sites . | tar -xC /dockerdata/drupal/instance_0/sites
+
+
+# Testdrupal Instance
+docker run --rm drupal tar -cC /var/www/html/sites . | tar -xC /dockerdata/drupal/instance_1/sites
+
+
