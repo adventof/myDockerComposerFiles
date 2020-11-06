@@ -13,7 +13,7 @@ services:
       - VALIDATION=http
       - EMAIL=webadmin-drupal@teichwirtschaftgreim.de
       - ONLY_SUBDOMAINS=false #optional
-      - SUBDOMAINS=phpmyadmin,www,portainer,matomo,drupal
+      - SUBDOMAINS=nextcloud,phpmyadmin,www,portainer,matomo,drupal
     networks:
       - lsio
     volumes:
@@ -52,6 +52,18 @@ services:
       - /dockerdata/drupal/instance_0/profiles:/var/www/html/profiles
       - /dockerdata/drupal/instance_0/sites:/var/www/html/sites
       - /dockerdata/drupal/instance_0/themes:/var/www/html/themes
+    networks:
+      - lsio
+    restart: unless-stopped
+
+  drupal_1:
+    image: drupal:latest
+    container_name: drupal_1
+    volumes:
+      - /dockerdata/drupal/instance_1/modules:/var/www/html/modules
+      - /dockerdata/drupal/instance_1/profiles:/var/www/html/profiles
+      - /dockerdata/drupal/instance_1/sites:/var/www/html/sites
+      - /dockerdata/drupal/instance_1/themes:/var/www/html/themes
     networks:
       - lsio
     restart: unless-stopped
