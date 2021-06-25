@@ -1,30 +1,127 @@
 version: "2"
+
 services:
-  letsencrypt_0:
-    image: linuxserver/letsencrypt
-    container_name: letsencrypt_0
+  letsencrypt:
+    image: ghcr.io/linuxserver/swag
+    container_name: letsencrypt
+    restart: unless-stopped
+    environment:
+      TZ: Europe/London
+      PUID: 1000
+      PGID: 1000
+      URL: codd.duckdns.org
+      SUBDOMAINS: wildcard
+      VALIDATION: duckdns
+      DUCKDNSTOKEN: 1a2f74b5-5c12-454c-9913-59ab634554be
+      EMAIL: andy.weifa@arcor.de
+    networks:
+      - lsio
+    ports:
+     - 80:80
+     - 443:443
+    hostname: letsencrypt
     cap_add:
       - NET_ADMIN
+    volumes:
+      - /dockerdata/letsencrypt/instance_0/ :/config
+      
+  duckdns:
+    image: linuxserver/duckdns
+    container_name: duckdns
+    restart: always
+    networks:
+      - lsio
+    hostname: duckdnsHost
     environment:
       - PUID=33
       - PGID=33
       - TZ=Europe/London
-      - URL=teichwirtschaftgreim.de
-      - VALIDATION=http
-      - DNSPLUGIN=cloudflare #optional
-      - PROPAGATION= #optional
-      - DUCKDNSTOKEN= #optional
-      - EMAIL=webadmin-drupal@teichwirtschaftgreim.de
-      - ONLY_SUBDOMAINS=false #optional
+      - SUBDOMAINS=codd
+      - TOKEN=1a2f74b5-5c12-454c-9913-59ab634554be
+      - LOG_FILE=false
+    volumes:
+      - /dockerdata/duckdns/instance_0:/config
+
+
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer_1
+    restart: always
     networks:
       - lsio
+    hostname: portainer
     volumes:
-      - /dockerdata/letsencrypt/instance_0:/config
-    ports:
-      - 443:443
-      - 80:80
-    restart: unless-stopped
+     - /var/run/docker.sock:/var/run/docker.sock
+     - /dockerdata/portainer/instance_1:/data 
 
+  db:
+    image: mariadb
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: OtieireieXwTiw
+      MYSQL_DATABASE: piwigodb
+      MYSQL_USER: piwigouser
+      MYSQL_PASSWORD: Iefe6eooRiKaeei
+      MYSQL_NEXTCLOUD_DATABASE: nextclouddatabase
+      MYSQL_NEXTCLOUD_USER: nextclouduser
+      MYSQL_NEXTCLOUD_PASSWORD: Wus0ouba9hibiS
+    networks:
+      - lsio
+    hostname: mariadb
+    volumes:
+      - /dockerdata/mariadb/instance_0:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    networks:
+      - lsio
+    hostname: phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mariadb
+
+  piwigo:
+    image: linuxserver/piwigo
+    container_name: piwigo
+    environment:
+      - PUID=33
+      - PGID=33
+      - TZ=Europe/Berlin
+    networks:
+      - lsio
+    hostname: piwigo
+    volumes:
+      - /dockerdata/piwigo/instance_0/config:/config
+      - /dockerdata/piwigo/instance_0/picture:/picture
+      - /dockerdata/piwigo/instance_0/pictures:/pictures
+      - /dockerdata/piwigo/instance_0/gallery:/gallery
+    restart: unless-stopped
+    
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=33
+      - PGID=33
+      - TZ=Europe/Berlin
+      - MYSQL_DATABASE=nextclouddatabase
+      - MYSQL_USER=nextclouduser
+      - MYSQL_PASSWORD=Wus0ouba9hibiS
+      - MYSQL_HOST=mariadb
+      - NEXTCLOUD_ADMIN_USER=admin
+      - NEXTCLOUD_TRUSTED_DOMAINS=https://nextcloud.tedcodd.duckdns.org
+    networks:
+      - lsio
+    hostname: nextcloud
+    volumes:
+      - /dockerdata/nextcloud/instance_0/config:/config
+      - /dockerdata/nextcloud/instance_0/html:/var/www/html
+    restart: unless-stopped
+    
 networks:
   lsio:
-    driver: bridge
+    external: false
+    
